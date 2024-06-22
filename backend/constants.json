@@ -1,0 +1,10 @@
+{
+    "DEV": "DEV",
+    "DEFAULT_AVATAR": "avatar.png",
+    "PASSWORD_MIN": 6,
+    "PASSWORD_MAX": 50,
+    "NAME_MIN": 2,
+    "NAME_MAX": 25,
+    "JWT_EXPIRATION": "10800s",
+    "PHOTOS_MIN": 4
+}

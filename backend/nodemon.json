@@ -1,0 +1,7 @@
+{
+    "watch": [""],
+    "ext": "ts,json,js",
+    "ignore": ["/**/*.spec.ts"],
+    "exec": "env-cmd -f ./.env ts-node index.js"
+  }
+  

@@ -1,0 +1,207 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "API Documentation",
+      "version": "1.0.0"
+    },
+    "schemes": [
+      "http",
+      "https"
+    ],
+    "consumes": [
+      "application/json"
+    ],
+    "produces": [
+      "application/json"
+    ],
+    "components": {
+        "securitySchemes": {
+          "Bearer": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "JWT"
+          }
+        }
+      },
+    "security": [
+        {
+          "Bearer": []
+        }
+    ],
+    "paths": {
+      "/api/register": {
+        "post": {
+          "summary": "POST /api/register",
+          "operationId": "REGISTER",
+          "requestBody": {
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "firstName": {
+                                "type": "string"
+                            },
+                            "lastName": {
+                                "type": "string"
+                            },
+                            "email": {
+                                "type": "string"
+                            },
+                            "password": {
+                                "type": "string"
+                            },
+                            "role": {
+                                "type": "string"
+                            },
+                            "photos": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "fileName": {
+                                            "type": "string"
+                                        },
+                                        "base64":  {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Client registered successfully"
+            }
+          },
+          "tags": [
+            "API list"
+          ]
+        }
+      },
+      "/api/login": {
+        "post": {
+          "summary": "POST /api/login",
+          "operationId": "LOGIN",
+          "requestBody": {
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "email": {
+                                "type": "string"
+                            },
+                            "password": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "User logged in sucessfully and token is returned",
+              "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "token": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+              }
+            }
+          },
+          "tags": [
+            "API list"
+          ]
+        }
+      },
+      "/api/users/me": {
+        "get": {
+          "summary": "GET /api/users/me",
+          "operationId": "CLIENTINFO",
+          "security": [
+            {
+               "Bearer": []
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Client info is returned",
+              "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "avatar": {
+                                "type": "string"
+                            },
+                            "photos": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "fileName": {
+                                            "type": "string"
+                                        },
+                                        "base64":  {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "user": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "firstName": {
+                                        "type": "string"
+                                    },
+                                    "lasttName": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "role": {
+                                        "type": "string"
+                                    },
+                                    "active": {
+                                        "type": "boolean"
+                                    },
+                                    "createdAt": {
+                                        "type": "string"
+                                    },
+                                    "updatedAt": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+              }
+            }
+          },
+          "tags": [
+            "API list"
+          ]
+        }
+      }
+  }
+}
