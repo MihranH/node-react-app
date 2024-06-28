@@ -1,0 +1,59 @@
+{
+    "env": {
+      "browser": true,
+      "es2021": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:react-hooks/recommended",
+      "plugin:jsx-a11y/recommended",
+      "plugin:import/errors",
+      "plugin:import/warnings",
+      "airbnb",
+      "plugin:prettier/recommended"
+    ],
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      },
+      "ecmaVersion": 12,
+      "sourceType": "module"
+    },
+    "plugins": [
+      "react",
+      "react-hooks",
+      "jsx-a11y",
+      "import",
+      "prettier"
+    ],
+    "rules": {
+        "prettier/prettier": [
+            "warn",
+            {
+              "endOfLine": "auto",
+              "singleQuote": true,
+              "jsxSingleQuote": true
+            }
+        ],
+        "no-unused-vars": "warn",
+        "quotes": ["error", "single"],
+        "react/react-in-jsx-scope": "off",
+        "import/no-named-as-default": "off",
+        "import/no-named-as-default-member": "off",
+        "react/prop-types": "off",
+        "import/no-extraneous-dependencies": "off",
+        "react/jsx-props-no-spreading": "off",
+        "no-console": "off",
+        "default-param-last": "off",
+        "no-undef": "off",
+        "no-unused-expressions": "off",
+        "react-hooks/exhaustive-deps": "off"
+    },
+    "settings": {
+      "react": {
+        "version": "detect"
+      }
+    }
+  }
+  

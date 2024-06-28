@@ -1,0 +1,20 @@
+.carousel {
+    .content {
+        height: 500px;
+        width: 400px;
+        display: flex;
+        justify-content: center;
+        background: #4d638a;
+        align-items: center;
+        border-radius: 15px;
+    }
+
+    .slick-arrow {
+        color: #fff;
+    }
+}
+
+.center {
+    display: flex !important;
+    justify-content: center;
+}

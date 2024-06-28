@@ -1,0 +1,21 @@
+.profile {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    align-content: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    img {
+        align-self: center;
+    }
+
+    .avatar {
+        display: flex;
+        justify-content: flex-end;
+        flex-direction: column;
+        align-content: flex-end;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+}
