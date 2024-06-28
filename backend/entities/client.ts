@@ -9,26 +9,20 @@ export class Client {
     @Column()
     avatar: string
 
-    @Column("simple-array")
+    @Column("simple-array", { default: [] })
     photos: string[]
 
-    @OneToOne(() => User)
+    @OneToOne(() => User, { onDelete: "CASCADE" })
     @JoinColumn()
     user: User
 }
 
 @ViewEntity({
-    expression: `SELECT "u"."id", "u"."firstName", "u"."lastName", "u"."firstName" || ' ' || "u"."lastName" as "fullName" from "user" "u" JOIN "client" "c" ON "u"."id" = "c"."userId"`
+    expression: `SELECT "u"."id" as "userId", "u"."firstName" || ' ' || "u"."lastName" as "fullName" from "user" "u" JOIN "client" "c" ON "u"."id" = "c"."userId"`
 })
 export class UserClientView {
     @ViewColumn()
-    id: number;
-
-    @ViewColumn()
-    firstName: string;
-
-    @ViewColumn()
-    lastName: string;
+    userId: number;
 
     @ViewColumn()
     fullName: string;

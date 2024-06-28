@@ -50,23 +50,6 @@
                             },
                             "password": {
                                 "type": "string"
-                            },
-                            "role": {
-                                "type": "string"
-                            },
-                            "photos": {
-                                "type": "array",
-                                "items": {
-                                    "type": "object",
-                                    "properties": {
-                                        "fileName": {
-                                            "type": "string"
-                                        },
-                                        "base64":  {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
                             }
                         }
                     }
@@ -75,7 +58,25 @@
           },
           "responses": {
             "200": {
-              "description": "Client registered successfully"
+              "description": "Client registered successfully",
+              "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "message": {
+                                "type": "string"
+                            },
+                            "email": {
+                                "type": "string"
+                            },
+                            "userId": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+              }
             }
           },
           "tags": [
@@ -106,7 +107,7 @@
           },
           "responses": {
             "200": {
-              "description": "User logged in sucessfully and token is returned",
+              "description": "User logged in sucessfully and token with user data is returned",
               "content": {
                 "application/json": {
                     "schema": {
@@ -114,6 +115,58 @@
                         "properties": {
                             "token": {
                                 "type": "string"
+                            },
+                            "clientUser": {
+                              "type": "object",
+                              "properties": {
+                                  "id": {
+                                      "type": "integer"
+                                  },
+                                  "avatar": {
+                                      "type": "string"
+                                  },
+                                  "imagePath": {
+                                    "type": "string"
+                                  },
+                                  "fullName": {
+                                     "type": "string"
+                                  },
+                                  "photos": {
+                                      "type": "array",
+                                      "items": {
+                                          "type": "string"
+                                      }
+                                  },
+                                  "user": {
+                                      "type": "object",
+                                      "properties": {
+                                          "id": {
+                                              "type": "integer"
+                                          },
+                                          "firstName": {
+                                              "type": "string"
+                                          },
+                                          "lasttName": {
+                                              "type": "string"
+                                          },
+                                          "email": {
+                                              "type": "string"
+                                          },
+                                          "role": {
+                                              "type": "string"
+                                          },
+                                          "active": {
+                                              "type": "boolean"
+                                          },
+                                          "createdAt": {
+                                              "type": "string"
+                                          },
+                                          "updatedAt": {
+                                              "type": "string"
+                                          }
+                                      }
+                                  }
+                              }
                             }
                         }
                     }
@@ -149,18 +202,16 @@
                             "avatar": {
                                 "type": "string"
                             },
+                            "imagePath": {
+                                "type": "string"
+                            },
+                            "fullName": {
+                                "type": "string"
+                             },
                             "photos": {
                                 "type": "array",
                                 "items": {
-                                    "type": "object",
-                                    "properties": {
-                                        "fileName": {
-                                            "type": "string"
-                                        },
-                                        "base64":  {
-                                            "type": "string"
-                                        }
-                                    }
+                                    "type": "string"
                                 }
                             },
                             "user": {
@@ -196,6 +247,42 @@
                     }
                 }
               }
+            }
+          },
+          "tags": [
+            "API list"
+          ]
+        }
+      },
+      "/api/upload": {
+        "post": {
+          "summary": "POST /api/upload",
+          "operationId": "UPLOAD",
+          "parameters": [{
+            "in": "query",
+            "name": "userId",
+            "type": "integer",
+            "description": "Specifies the user id",
+            "required": true
+          }],
+          "requestBody": {
+            "content": {
+                "multipart/form-data": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "file": {
+                                "type": "string",
+                                "format": "binary"
+                            }
+                        }
+                    }
+                }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Files uploaded successfully"
             }
           },
           "tags": [
