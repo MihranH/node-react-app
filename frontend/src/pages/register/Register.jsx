@@ -21,6 +21,7 @@ function Register() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [photos, setPhotos] = useState([]);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const getPhotos = () => {
@@ -45,12 +46,13 @@ function Register() {
         `Minimum ${PHOTOS_MIN_AMOUNT} photos should be uploaded`,
       );
     }
-
+    setLoading(true);
     dispatch(
       register({ firstName, lastName, email, password }, (res) => {
         if (res.userId) {
           dispatch(
             upload({ photos: getPhotos(), userId: res.userId }, (resUpload) => {
+              setLoading(false);
               if (resUpload === true) {
                 message.success('Successfully registered!');
                 navigate('/login', { replace: true });
@@ -64,6 +66,7 @@ function Register() {
             }),
           );
         } else {
+          setLoading(false);
           showError(
             res && typeof res === 'string' ? res : 'Registration Failed',
           );
@@ -222,7 +225,11 @@ function Register() {
             </Form.Item>
             <UploadComponent data={uploadData} />
             <Form.Item>
-              <ButtonComponent title='Register' type='submit' />
+              <ButtonComponent
+                title='Register'
+                type='submit'
+                loading={loading}
+              />
             </Form.Item>
             <Link to='/login'>Sign in</Link>
           </Form>

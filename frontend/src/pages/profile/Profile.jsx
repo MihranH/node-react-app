@@ -10,7 +10,7 @@ function Profile() {
   const { user } = useSelector((state) => state.auth);
   const photos = user.photos.map(
     (photo) =>
-      `${process.env.REACT_APP_API_URL.replace('/api', '')}${user.imagePath}/${photo}`,
+      `${process.env.REACT_APP_API_URL.replace('/api', '')}${photo.url}`,
   );
   const dispatch = useDispatch();
   const navigate = useNavigate();

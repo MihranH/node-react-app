@@ -14,7 +14,7 @@ function CarouselComponent({ photos }) {
         speed={1000}
       >
         {photos.map((photo) => (
-          <div className='center'>
+          <div className='center' key={photo}>
             <div className='content'>
               <img alt='avatar' width={300} height={380} src={photo} />
             </div>

@@ -41,15 +41,15 @@ You don't have to ever use `eject`. The curated feature set is suitable for smal
 
 ## Folder structure
 
-src/
-    api/
-    components/
-    pages/
-    routes/
-    store/
-        actions/
-        reducers/
-        sagas/
+src/ \
+    api/ \
+    components/ \
+    pages/ \
+    routes/ \
+    store/ \
+        actions/ \
+        reducers/ \
+        sagas/ \
 
 ## Endpoints
 
@@ -58,6 +58,10 @@ src/
     /api/login  -  POST request for logging the user in
     /api/upload  -  POST request for uploading user files
 
+## Use ANTD for UI
+
+For UI components use ANTD, otherwise custom ones if there is a specific need.
+For documentation refer to: https://ant.design/
 
 ## Learn More
 
