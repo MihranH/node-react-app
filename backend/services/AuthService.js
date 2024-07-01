@@ -3,9 +3,14 @@ const path = require('path');
 const jwt = require('jsonwebtoken');
 const { User } = require('../entities/user');
 const { Client, UserClientView } = require('../entities/client');
+const { Photo } = require('../entities/photo');
 const { dataSource } = require('../dbConnection');
-const { JWT_EXPIRATION, UPLOAD_PATH } = require('../constants.json');
-const { getContentDisposition } = require('../helpers');
+const {
+  JWT_EXPIRATION,
+  UPLOAD_PATH,
+  IMAGE_EXTENSIONS,
+} = require('../constants.json');
+const { getContentDisposition, getFileExtension } = require('../helpers');
 const fsPromises = require('fs/promises');
 
 class AuthService {
@@ -33,7 +38,7 @@ class AuthService {
 
   static async generateToken(email) {
     return jwt.sign({ email }, process.env.SECRET_TOKEN, {
-      expiresIn: JWT_EXPIRATION,
+      expiresIn: JWT_EXPIRATION, // 3 hours
     });
   }
 
@@ -78,6 +83,7 @@ class AuthService {
     const client = await repositoryClient
       .createQueryBuilder('client')
       .innerJoinAndSelect('client.user', 'user')
+      .innerJoinAndSelect('client.photos', 'photos')
       .where('user.email = :email', { email })
       .getOne();
     if (!client) {
@@ -89,7 +95,6 @@ class AuthService {
     return {
       ...client,
       ...viewInfo,
-      imagePath: `${UPLOAD_PATH}/${client?.user?.id}`,
     };
   }
 
@@ -108,7 +113,7 @@ class AuthService {
     return Promise.all(promises);
   }
 
-  static async upload(part, userId, index) {
+  static async uploadImage(part, userId, index) {
     let fileName;
     const headerEndIndex = part.indexOf('\r\n\r\n');
     if (headerEndIndex === -1) return;
@@ -118,6 +123,11 @@ class AuthService {
 
     if (contentDisposition?.includes('form-data; name="file"; filename=')) {
       fileName = contentDisposition.match(/filename="(.+?)"/)?.[1];
+      const extension = getFileExtension(fileName);
+      if (!IMAGE_EXTENSIONS.includes(extension)) {
+        return;
+      }
+
       fileName = `${index}_${fileName}`;
 
       const start = headerEndIndex + 4; // Skip \r\n\r\n
@@ -143,12 +153,22 @@ class AuthService {
   }
 
   static async updateClientPhotos(userId, photos) {
-    return dataSource
-      .createQueryBuilder()
-      .update(Client)
-      .set({ photos })
-      .where('userId = :userId', { userId })
-      .execute();
+    const repositoryPhoto = dataSource.getRepository(Photo);
+    const repositoryClient = dataSource.getRepository(Client);
+
+    const client = await repositoryClient
+      .createQueryBuilder('client')
+      .innerJoinAndSelect('client.user', 'user')
+      .where('user.id = :id', { id: userId })
+      .getOne();
+
+    const photoData = photos.map((photo) => ({
+      name: photo,
+      url: `${UPLOAD_PATH}/${userId}/${photo}`,
+      client,
+    }));
+    const result = repositoryPhoto.create(photoData);
+    await repositoryPhoto.save(result);
   }
 }
 

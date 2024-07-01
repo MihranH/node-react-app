@@ -20,7 +20,16 @@ function getContentDisposition(headerString) {
   return contentDisposition?.split(': ')?.[1];
 }
 
+function getFileExtension(fileName) {
+  const splitted = fileName?.split('.');
+  if (splitted?.length < 2) {
+    return null;
+  }
+  return splitted[splitted.length - 1];
+}
+
 module.exports = {
   extractBufferData,
   getContentDisposition,
+  getFileExtension,
 };

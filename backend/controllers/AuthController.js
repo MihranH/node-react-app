@@ -1,7 +1,7 @@
 const { validationResult } = require('express-validator');
 const AuthService = require('../services/AuthService');
 const Logger = require('../services/Logger');
-const { DEFAULT_AVATAR, ROLE } = require('../constants.json');
+const { DEFAULT_AVATAR, ROLE, PHOTOS_MIN } = require('../constants.json');
 const { extractBufferData } = require('../helpers');
 
 class AuthController {
@@ -47,6 +47,12 @@ class AuthController {
   static async login(req, res) {
     try {
       const { email, password } = req.body;
+      const { errors } = validationResult(req);
+      if (errors.length) {
+        return res.status(400).send({
+          message: `${errors.map((err) => err.msg).join(', ')}`,
+        });
+      }
 
       const user = await AuthService.getUserByEmail(email);
       if (!user) {
@@ -88,12 +94,13 @@ class AuthController {
     }
   }
 
-  static async uploadFiles(req, res) {
+  static async uploadImage(req, res) {
     const { userId } = req.query;
     try {
       if (!userId) {
         return res.status(400).send({ message: 'Please provide the user' });
       }
+
       const user = await AuthService.getUserById(userId);
       if (!user) {
         return res
@@ -101,12 +108,17 @@ class AuthController {
           .send({ message: `User with id ${userId} not found` });
       }
 
+      const clientUser = await AuthService.getClientByEmail(user.email);
+      if (clientUser?.photos.length) {
+        return res.status(400).send({ message: 'Images already uploaded for the user' });
+      }
+
       const data = [];
       const contentType = req.headers['content-type'];
       const boundary = contentType?.split('=')?.[1];
 
       if (!boundary) {
-        return res.status(400).send({ message: 'No files uploaded' });
+        return res.status(400).send({ message: 'No image uploaded' });
       }
 
       req.on('data', (chunk) => {
@@ -117,28 +129,35 @@ class AuthController {
         const fileNames = [];
         try {
           const parts = extractBufferData(Buffer.concat(data), boundary);
+          if (parts.length < PHOTOS_MIN + 1) {
+            // Images min count plus the part which is not image
+            return res
+              .status(400)
+              .send({ message: `Images should be minimum ${PHOTOS_MIN}` });
+          }
+
           await AuthService.createUserFolder(userId);
 
           for (const index in parts) {
             const part = parts[index];
-            const fileName = await AuthService.upload(part, userId, index);
+            const fileName = await AuthService.uploadImage(part, userId, index);
             if (fileName) {
               fileNames.push(fileName);
             }
           }
           await AuthService.updateClientPhotos(userId, fileNames);
-          return res.send({ message: 'Files uploaded successfully' });
+          return res.send({ message: 'Images uploaded successfully' });
         } catch (error) {
           Logger.error(error);
           await AuthService.deleteUserById(userId, fileNames);
-          return res.status(400).send({ message: 'File upload failed' });
+          return res.status(400).send({ message: 'Image upload failed' });
         }
       });
 
       req.on('error', async (err) => {
         Logger.error(err);
         await AuthService.deleteUserById(userId);
-        return res.status(400).send({ message: 'File upload failed' });
+        return res.status(400).send({ message: 'Image upload failed' });
       });
     } catch (error) {
       Logger.error(error);

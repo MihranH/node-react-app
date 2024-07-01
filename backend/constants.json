@@ -8,5 +8,6 @@
     "NAME_MAX": 25,
     "JWT_EXPIRATION": "10800s",
     "PHOTOS_MIN": 4,
-    "ROLE": "Admin"
+    "ROLE": "Admin",
+    "IMAGE_EXTENSIONS": ["png", "jpeg", "jpg", "avif", "gif", "jfif", "pjpeg", "pjp", "apng", "svg", "webp"]
 }

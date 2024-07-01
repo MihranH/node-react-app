@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn, JoinColumn, ViewColumn, ViewEntity, OneToOne } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, JoinColumn, ViewColumn, ViewEntity, OneToOne, OneToMany } from 'typeorm';
 import { User } from './user';
+import { Photo } from './photo';
 
 @Entity()
 export class Client {
@@ -9,8 +10,9 @@ export class Client {
     @Column()
     avatar: string
 
-    @Column("simple-array", { default: [] })
-    photos: string[]
+    @OneToMany(() => Photo, (photo) => photo.client)
+    @JoinColumn()
+    photos: Photo[]
 
     @OneToOne(() => User, { onDelete: "CASCADE" })
     @JoinColumn()

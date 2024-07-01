@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { User } from './user';
+import { Client } from './client';
 
 @Entity()
 export class Photo {
@@ -18,6 +18,6 @@ export class Photo {
     @Column({ default: () => "CURRENT_TIMESTAMP" })
     updatedAt: Date
 
-    @ManyToOne(() => User)
-    user: User
+    @ManyToOne(() => Client, (client) => client.photos)
+    client: Client
 }

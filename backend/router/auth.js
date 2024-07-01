@@ -15,6 +15,6 @@ router.post('/login', loginValidation, (req, res) =>
 router.get('/users/me', authenticate, (req, res) =>
   AuthController.getUserInfo(req, res),
 );
-router.post('/upload', (req, res) => AuthController.uploadFiles(req, res));
+router.post('/upload', (req, res) => AuthController.uploadImage(req, res));
 
 module.exports = router;

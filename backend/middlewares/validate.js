@@ -29,8 +29,10 @@ const registerValidation = [
 ];
 
 const loginValidation = [
-  body('email').exists({ checkFalsy: true }),
-  body('password').exists({ checkFalsy: true }),
+  body('email').exists({ checkFalsy: true }).withMessage('Email is required'),
+  body('password')
+    .exists({ checkFalsy: true })
+    .withMessage('Password is required'),
 ];
 
 module.exports = {

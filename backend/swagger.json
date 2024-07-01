@@ -134,7 +134,24 @@
                                   "photos": {
                                       "type": "array",
                                       "items": {
-                                          "type": "string"
+                                          "type": "object",
+                                          "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "url": {
+                                                "type": "string"
+                                            },
+                                            "createdAt": {
+                                                "type": "string"
+                                            },
+                                            "updatedAt": {
+                                                "type": "string"
+                                            }
+                                          }
                                       }
                                   },
                                   "user": {
@@ -211,7 +228,24 @@
                             "photos": {
                                 "type": "array",
                                 "items": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "properties": {
+                                      "id": {
+                                          "type": "integer"
+                                      },
+                                      "name": {
+                                          "type": "string"
+                                      },
+                                      "url": {
+                                          "type": "string"
+                                      },
+                                      "createdAt": {
+                                          "type": "string"
+                                      },
+                                      "updatedAt": {
+                                          "type": "string"
+                                      }
+                                    }
                                 }
                             },
                             "user": {
