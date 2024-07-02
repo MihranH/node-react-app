@@ -10,7 +10,7 @@ export class Client {
     @Column()
     avatar: string
 
-    @OneToMany(() => Photo, (photo) => photo.client)
+    @OneToMany(() => Photo, (photo) => photo.client, { cascade: true })
     @JoinColumn()
     photos: Photo[]
 

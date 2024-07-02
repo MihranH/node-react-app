@@ -110,7 +110,9 @@ class AuthController {
 
       const clientUser = await AuthService.getClientByEmail(user.email);
       if (clientUser?.photos.length) {
-        return res.status(400).send({ message: 'Images already uploaded for the user' });
+        return res
+          .status(400)
+          .send({ message: 'Images already uploaded for the user' });
       }
 
       const data = [];

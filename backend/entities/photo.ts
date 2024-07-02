@@ -18,6 +18,6 @@ export class Photo {
     @Column({ default: () => "CURRENT_TIMESTAMP" })
     updatedAt: Date
 
-    @ManyToOne(() => Client, (client) => client.photos)
+    @ManyToOne(() => Client, (client) => client.photos, { onDelete: "CASCADE" })
     client: Client
 }
